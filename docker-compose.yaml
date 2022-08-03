@@ -1,0 +1,22 @@
+services:
+  ruby:
+    build:
+      context: .
+    environment:
+      S3_BUCKET: bucket
+      S3_ENDPOINT: http://localhost.localstack.cloud:4566
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: eu-central-1
+    volumes:
+      - .:/app
+    command: ruby script.rb
+  localstack:
+    image: localstack/localstack
+    ports:
+      - 4566:4566
+    environment:
+      DEBUG: 1
+      DISABLE_CORS_CHECKS: '1'
+    volumes:
+      - .localstack:/docker-entrypoint-initaws.d
